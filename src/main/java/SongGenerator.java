@@ -1,30 +1,36 @@
+import java.io.File;
 import java.net.URL;
 
 public class SongGenerator {
 
-    private static SongComponent generate(){
-        String path = "src/main/resources/music/";
-        SongComponent allMusic = new PlayList("All Music","All Music");
-        SongComponent ninetiesDance = new PlayList("Nineties Dance","Dance music from the 90s");
-        SongComponent dance = new PlayList("Dance Music","Dance music");
-        SongComponent twoThusandDance = new PlayList("2000 Dance","Dance music from the 00s");
+    private Song getSong(File songFile){
+        String[] bandAndSong = songFile.getName().split(" - ");
+        return new Song(bandAndSong[1], bandAndSong[0], songFile.getAbsolutePath());
+    }
 
-        allMusic.add(dance);
-        dance.add(ninetiesDance);
-        dance.add(twoThusandDance);
-        Song stepOn = new Song("Step On", "Happy Mondays", 1990,path + "Happy Mondays - Step On.mp3");
-        Song foolsGold = new Song("Fool,s Gold", "Stone Roses", 1989, path + "The Stone Roses - Fool's Gold.mp3");
-        ninetiesDance.add(stepOn);
-        ninetiesDance.add(foolsGold);
-        Song crazy = new Song("Crazy", "Gnarls Barkley", 2006,path + "Gnarls Barkley - Crazy.mp3");
-        twoThusandDance.add(crazy);
-        Song requiem = new Song("Requiem", "Mozart", 1791, "");
-        allMusic.add(requiem);
+    private SongComponent navigateDirectory(File musicDirectory){
+        PlayList playList = new PlayList(musicDirectory.getName());
+        File[] musicFiles = musicDirectory.listFiles();
+        for (File musicFile : musicFiles){
+            if (musicFile.isFile()){
+                playList.add(getSong(musicFile));
+            } else if (musicFile.isDirectory()){
+                SongComponent songComponent = navigateDirectory(musicFile.getAbsoluteFile());
+                playList.add(songComponent);
+            }
+        }
+        return playList;
+    }
 
-        return allMusic;
+    private SongComponent generate(){
+        File musicDirectory = new File("src/main/resources/Music/");
+        SongComponent music = navigateDirectory(musicDirectory);
+
+        return music;
     }
     public static void main(String[] args) {
-        SongComponent allMusic = generate();
+        SongGenerator songGenerator = new SongGenerator();
+        SongComponent allMusic = songGenerator.generate();
         Player player = new Player(allMusic);
         player.displaySongInfo();
         player.playSong();

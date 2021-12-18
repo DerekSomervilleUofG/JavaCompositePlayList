@@ -4,10 +4,6 @@ public abstract class SongComponent {
         throw new UnsupportedOperationException();
     }
 
-    public void remove(SongComponent songComponent){
-        throw new UnsupportedOperationException();
-    }
-
     public SongComponent getComponent(int compositeIndex){
         throw new UnsupportedOperationException();
     }
@@ -17,10 +13,6 @@ public abstract class SongComponent {
     }
 
     public String getBandName(){
-        throw new UnsupportedOperationException();
-    }
-
-    public int getReleaseYear(){
         throw new UnsupportedOperationException();
     }
 

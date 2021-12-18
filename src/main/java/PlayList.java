@@ -8,23 +8,16 @@ public class PlayList extends SongComponent{
     String playListName;
     String playListDescription;
 
-    public PlayList(String playListName, String playListDescription){
+    public PlayList(String playListName){
         this.playListName = playListName;
-        this.playListDescription = playListDescription;
     }
 
     public String getPlayListName(){
         return playListName;
     }
-    public String getPlayListDescription(){
-        return playListDescription;
-    }
 
     public void add(SongComponent songComponent){
         songComponents.add(songComponent);
-    }
-    public void remove(SongComponent songComponent){
-        songComponents.remove(songComponent);
     }
 
     public SongComponent getComponent(int componentIndex){
@@ -32,7 +25,7 @@ public class PlayList extends SongComponent{
     }
 
     public void displaySongInfo(){
-        System.out.println(getPlayListName() + " " + getPlayListDescription() + "\n");
+        System.out.println("\n" + getPlayListName() );
 
         SongComponentIterator songIterator = new SongComponentIterator(songComponents);
 
